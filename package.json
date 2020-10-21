@@ -1,0 +1,17 @@
+{
+  "name": "wrestlestocks",
+  "version": "0.0.1",
+  "description": "A Wrestling Themes Stock Stimulator",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server/index.js"
+  },
+  "author": "Michael Boro",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
