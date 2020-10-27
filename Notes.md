@@ -39,11 +39,6 @@ Transactions
 
 ## Shows to Add
 
-1/1/20 - NXT
-1/1/20 - Dynamite
-1/3/20 - Smackdown
-1/3/20 - 205 Live
 1/4/20 - Wrestle Kingdom
 1/6/20 - Raw
-1/7/20 - Dark
 1/8/20 - Main Event

@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express");
 
 const router = express.Router();
@@ -19,30 +18,44 @@ router.get("/:name/matches", async (req, res) => {
 // Fetches a Wrestlers profile
 router.get("/:name/profile", async (req, res) => {
   let total = 1000;
+  let regexVal = `^${req.params.name}$`;
+  let regexName = new RegExp(regexVal, "i");
   try {
-    const wrestler = await Wrestler.findOne({ name: req.params.name });
+    const wrestler = await Wrestler.findOne({ name: { $regex: regexName } });
     if (!wrestler) {
       return res.status(404).send({ error: "Could not find wrestler" });
     } else {
       const matches = await MatchRecord.find({
-        $or: [{ winners: req.params.name }, { losers: req.params.name }],
+        $or: [
+          { winners: { $regex: regexName } },
+          { losers: { $regex: regexName } },
+        ],
       });
       if (matches.length > 0) {
         // let total = 0;
         matches.forEach((match) => {
-          total += calcPoints(match, req.params.name);
+          total += calcPoints(match, wrestler.name);
         });
         wrestler.set("points", total);
       } else {
         wrestler.set("points", 0);
       }
-      //   const wrestlerParsed = JSON.parse(JSON.stringify(wrestler));
-      //   wrestlerParsed.points = total;
       return res.send({ points: total, ...wrestler.toJSON() });
     }
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
+  }
+});
+
+router.post("/new", async (req, res) => {
+  const user = new Wrestler(req.body);
+  try {
+    await user.save();
+    res.send(user);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ message: "An error has occured" });
   }
 });
 

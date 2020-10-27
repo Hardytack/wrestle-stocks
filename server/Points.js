@@ -1,9 +1,9 @@
 const points = {
   events: {
-    D: ["Dark", "Main Event"],
-    C: ["Raw", "Dynamite"],
+    D: ["Dark", "Main Event", "205 Live"],
+    C: ["Raw", "Dynamite", "Smackdown", "NXT", "Strong"],
     B: ["Battleground"],
-    A: ["Double or Nothing"],
+    A: ["Double or Nothing", "Revolution", "Royal Rumble"],
     S: ["Wrestlemania", "Wrestle Kingdom"],
   },
 };
@@ -25,7 +25,7 @@ const calcPoints = (match, wrestler) => {
   else total += 5;
 
   // Add Title Multiplier
-  if (match.titleMatch) total *= titleMultiplier(match);
+  if (match.titleMatch) total *= titleMultiplier(match.titleOptions, wrestler);
 
   // Add Event Multiplier
   total *= eventMultiplier(match);
@@ -37,11 +37,20 @@ const calcPoints = (match, wrestler) => {
 };
 
 // Returs multiplier for Title Match
-const titleMultiplier = (match) => {
-  if (match.titleMatch) {
-    if (match.titleOptions[0]) return 3;
-    else return 2;
-  }
+const titleMultiplier = (options, wrestler) => {
+  let total = 0;
+  options.forEach((title) => {
+    if (!title[0]) {
+      total += 2;
+    } else {
+      if (title[2].includes(wrestler) || title[3].includes(wrestler)) {
+        total += 3;
+      } else {
+        total += 2;
+      }
+    }
+  });
+  return total;
 };
 
 // Returns multiplier for Event
