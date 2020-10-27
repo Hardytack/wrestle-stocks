@@ -23,8 +23,8 @@ app.use(bodyParser.json());
 app.use("/wrestler", WrestlerRoute);
 app.use("/matches", MatchRoute);
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.get("/test", (req, res) => {
+  res.send({ message: "Hello World" });
 });
 
 app.get("/match", async (req, res) => {
