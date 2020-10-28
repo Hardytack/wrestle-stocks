@@ -39,6 +39,4 @@ Transactions
 
 ## Shows to Add
 
-1/4/20 - Wrestle Kingdom
-1/6/20 - Raw
-1/8/20 - Main Event
+All but first week

@@ -1,6 +1,6 @@
 const points = {
   events: {
-    D: ["Dark", "Main Event", "205 Live"],
+    D: ["Dark", "Main Event", "205 Live", "NXT UK"],
     C: ["Raw", "Dynamite", "Smackdown", "NXT", "Strong"],
     B: ["Battleground"],
     A: ["Double or Nothing", "Revolution", "Royal Rumble"],
@@ -40,10 +40,10 @@ const calcPoints = (match, wrestler) => {
 const titleMultiplier = (options, wrestler) => {
   let total = 0;
   options.forEach((title) => {
-    if (!title[0]) {
+    if (!title.change) {
       total += 2;
     } else {
-      if (title[2].includes(wrestler) || title[3].includes(wrestler)) {
+      if (title.new.includes(wrestler) || title.old.includes(wrestler)) {
         total += 3;
       } else {
         total += 2;

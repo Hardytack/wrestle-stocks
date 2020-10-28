@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.App {
+  h1 {
+    margin-bottom: 5px;
+  }
+  form {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 50%;
+    margin: 0 auto;
+    .inputGroup {
+      margin: 5px;
+      display: grid;
+      grid-template-columns: 20% 80%;
+      label {
+        justify-self: end;
+        margin-right: 10px;
+      }
+    }
+    .save {
+      // grid-column: 1 / 3;
+      margin-top: 15px;
+      width: 50%;
+      justify-self: center;
+    }
+  }
+}

@@ -20,8 +20,8 @@ const MatchRoute = require("./routes/MatchRecord");
 const Wrestler = require("./models/Wrestler");
 
 app.use(bodyParser.json());
-app.use("/wrestler", WrestlerRoute);
-app.use("/matches", MatchRoute);
+app.use("/api/wrestler", WrestlerRoute);
+app.use("/api/matches", MatchRoute);
 
 app.get("/test", (req, res) => {
   res.send({ message: "Hello World" });

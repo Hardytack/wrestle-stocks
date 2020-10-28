@@ -52,7 +52,7 @@ router.post("/new", async (req, res) => {
   const user = new Wrestler(req.body);
   try {
     await user.save();
-    res.send(user);
+    res.status(201).send(user);
   } catch (e) {
     console.log(e);
     res.status(500).send({ message: "An error has occured" });

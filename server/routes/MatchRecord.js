@@ -19,11 +19,17 @@ router.get("/:name/all", async (req, res) => {
   res.send(matches);
 });
 
+router.get("/all", async (req, res) => {
+  const matches = await MatchRecord.find({}).sort("date");
+  res.send(matches);
+});
+
 router.post("/new", async (req, res) => {
   const winCheck = await asyncVerify(req.body.winners, verifyWrestlers);
   const loseCheck = await asyncVerify(req.body.losers, verifyWrestlers);
 
   if (!winCheck || !loseCheck) {
+    console.log("Invalid Wrestler");
     res.send({ message: "Please make sure all wrestlers are valid" });
   } else {
     const match = new MatchRecord(req.body);
