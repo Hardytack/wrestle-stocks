@@ -36,7 +36,3 @@ Transactions
 - Action
 - Wrestler
 - Price
-
-## Shows to Add
-
-All but first week

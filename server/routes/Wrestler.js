@@ -2,45 +2,67 @@ const express = require("express");
 
 const router = express.Router();
 
-const calcPoints = require("../Points");
+const { wrestlerReset } = require("../Points");
 
 const Wrestler = require("../models/Wrestler");
 const MatchRecord = require("../models/MatchRecord");
 
+// Fetches a list of all Wrestlers
+router.get("/all", async (req, res) => {
+  let wrestlers;
+  if (!req.query.promotion) {
+    wrestlers = await Wrestler.find({}).sort("name");
+  } else {
+    let regexVal = `^${req.query.promotion}$`;
+    let regexName = new RegExp(regexVal, "i");
+    wrestlers = await Wrestler.find({
+      promotions: regexName,
+    }).sort("name");
+  }
+  res.send({ wrestlers });
+});
+
 // Fetches all matches for specific Wrestler
 router.get("/:name/matches", async (req, res) => {
+  let regexVal = `^${req.params.name}$`;
+  let regexName = new RegExp(regexVal, "i");
+  const wrestler = await Wrestler.findOne({
+    $or: [{ name: { $regex: regexName } }, { altNames: { $regex: regexName } }],
+  });
   const matches = await MatchRecord.find({
-    $or: [{ winners: req.params.name }, { losers: req.params.name }],
+    $or: [
+      { winners: wrestler.name },
+      { winners: wrestler.altNames },
+      { losers: wrestler.name },
+      { losers: wrestler.altNames },
+    ],
   });
   return res.send(matches);
 });
 
 // Fetches a Wrestlers profile
 router.get("/:name/profile", async (req, res) => {
-  let total = 1000;
   let regexVal = `^${req.params.name}$`;
   let regexName = new RegExp(regexVal, "i");
   try {
-    const wrestler = await Wrestler.findOne({ name: { $regex: regexName } });
+    const wrestler = await Wrestler.findOne({
+      $or: [
+        { name: { $regex: regexName } },
+        { altNames: { $regex: regexName } },
+      ],
+    });
     if (!wrestler) {
       return res.status(404).send({ error: "Could not find wrestler" });
     } else {
       const matches = await MatchRecord.find({
         $or: [
-          { winners: { $regex: regexName } },
-          { losers: { $regex: regexName } },
+          { winners: wrestler.name },
+          { losers: wrestler.name },
+          { winners: wrestler.altNames },
+          { losers: wrestler.altNames },
         ],
       });
-      if (matches.length > 0) {
-        // let total = 0;
-        matches.forEach((match) => {
-          total += calcPoints(match, wrestler.name);
-        });
-        wrestler.set("points", total);
-      } else {
-        wrestler.set("points", 0);
-      }
-      return res.send({ points: total, ...wrestler.toJSON() });
+      return res.send({ profile: wrestler, matches: matches });
     }
   } catch (e) {
     console.log(e);
@@ -49,13 +71,38 @@ router.get("/:name/profile", async (req, res) => {
 });
 
 router.post("/new", async (req, res) => {
-  const user = new Wrestler(req.body);
+  const wrestler = new Wrestler(req.body);
   try {
-    await user.save();
-    res.status(201).send(user);
+    await wrestler.save();
+    res.status(201).send(wrestler);
   } catch (e) {
     console.log(e);
     res.status(500).send({ message: "An error has occured" });
+  }
+});
+
+// Resets and Recalculates all Wrestlers Values
+router.get("/globalUpdate", async (req, res) => {
+  const wrestlers = await Wrestler.find({});
+  for (let i = 0; i < wrestlers.length; i++) {
+    console.log(`Updating ${wrestlers[i]}`);
+    await wrestlerReset(wrestlers[i]);
+  }
+  res.send("All Updated...?");
+});
+
+// Resets and Recalculates a Single Wrestler Values
+router.get("/reset/:name", async (req, res) => {
+  const wrestler = await Wrestler.findOne({ name: req.params.name });
+  if (!wrestler) {
+    return res.status(404).send({ error: "Please enter a valid name" });
+  }
+  try {
+    await wrestlerReset(wrestler);
+    res.send(`${req.params.name} has been updated`);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 });
 

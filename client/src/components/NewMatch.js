@@ -13,8 +13,16 @@ export default function NewMatch() {
     old: "",
   });
   const [event, setEvent] = useState("");
-
   const [date, setDate] = useState("");
+
+  const clearForm = () => {
+    setWinners("");
+    setLosers("");
+    setTitleMatch(false);
+    setFinish("");
+    setStipulation("None");
+    setTitleOptions({ change: false, title: "", new: "", old: "" });
+  };
 
   const handleMatchSubmmit = async (e) => {
     e.preventDefault();
@@ -46,14 +54,9 @@ export default function NewMatch() {
       if (res.status !== 201) {
         alert("An error has occured");
       } else {
+        clearForm();
         alert("Added successfully");
       }
-      setWinners("");
-      setLosers("");
-      setTitleMatch(false);
-      setFinish("");
-      setStipulation("None");
-      setTitleOptions({ change: false, title: "", new: "", old: "" });
     });
   };
   return (

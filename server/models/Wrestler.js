@@ -17,6 +17,14 @@ const WrestlerSchema = new mongoose.Schema({
     type: String,
     default: "https://wrestle-stocks.s3.amazonaws.com/default.png",
   },
+  points: {
+    type: Number,
+    default: 1000,
+  },
+  prevPoints: {
+    type: Array,
+    default: [],
+  },
 });
 
 const Wrestler = mongoose.model("Wrestler", WrestlerSchema);
