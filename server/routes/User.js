@@ -4,9 +4,17 @@ const router = express.Router();
 
 const User = require("../models/User");
 
-router.get("/usersTest", (req, res) => {
-  res.send({ message: "All Users" });
-});
+const withAuth = require("../middleware/middleware");
+
+// router.get("/usersTest", withAuth, async (req, res) => {
+//   try {
+//     const user = await User.findOne({ username: req.headers.username });
+//     res.send(user);
+//   } catch (e) {
+//     console.log(e);
+//     res.status(500).send(e);
+//   }
+// });
 
 router.get("/adminCheck", async (req, res) => {
   res.send("Hello");
