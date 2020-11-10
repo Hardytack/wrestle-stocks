@@ -1,3 +1,9 @@
+# Todo
+
+- Add Users
+- Add Authentication / Admin Level Auth
+- Add Transactions
+
 ## Models
 
 Users
