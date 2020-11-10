@@ -73,14 +73,14 @@ UserSchema.pre("save", function (next) {
       const err = { response: "Your password is invalid" };
       next(err);
     }
-    bcrypt.hash(document.password, process.env.SALT_ROUNDS, function (
+    bcrypt.hash(document.password, parseInt(process.env.SALT_ROUNDS), function (
       err,
       hashedPassword
     ) {
       if (err) {
         next(err);
       } else {
-        document.password = hashedPasswordl;
+        document.password = hashedPassword;
         next();
       }
     });
