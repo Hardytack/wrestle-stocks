@@ -6,18 +6,12 @@ const User = require("../models/User");
 
 const { withAuth, withAdminAuth } = require("../middleware/middleware");
 
-// router.get("/usersTest", withAuth, async (req, res) => {
-//   try {
-//     const user = await User.findOne({ username: req.headers.username });
-//     res.send(user);
-//   } catch (e) {
-//     console.log(e);
-//     res.status(500).send(e);
-//   }
-// });
-
 router.get("/adminCheck", withAdminAuth, async (req, res) => {
-  res.send("Hello");
+  res.status(200).send("Hello");
+});
+
+router.get("/checkToken", withAuth, async (req, res) => {
+  res.status(200).send();
 });
 
 router.post("/new", async (req, res) => {
