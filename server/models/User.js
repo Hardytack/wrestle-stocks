@@ -54,6 +54,22 @@ const UserSchema = new mongoose.Schema({
   ],
 });
 
+UserSchema.statics.findByCredentials = async function (username, password) {
+  const user = await this.findOne({ username });
+
+  if (!user) {
+    throw new Error("Could not locate user");
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error("Password is incorrect");
+  }
+
+  return user;
+};
+
 UserSchema.methods.generateAuthTokens = async function () {
   const user = this;
   const token = jwt.sign({ _id: user.username }, process.env.SECRET);
@@ -61,6 +77,16 @@ UserSchema.methods.generateAuthTokens = async function () {
   await user.save();
 
   return token;
+};
+
+UserSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  delete userObject.tokens;
+
+  return userObject;
 };
 
 UserSchema.pre("save", function (next) {

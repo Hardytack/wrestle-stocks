@@ -1,3 +1,5 @@
+const Wrestler = require("./models/Wrestler");
+
 async function asyncVerify(arr, cb) {
   let check = true;
   for (let i = 0; i < arr.length; i++) {

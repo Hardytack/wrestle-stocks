@@ -28,6 +28,7 @@ const points = {
       "The New Beginning in Osaka",
       "Super Showdown",
       "Elimination Chamber",
+      "Money In The Bank",
     ],
     A: [
       "Double or Nothing",
@@ -47,6 +48,14 @@ const calcPoints = (match, wrestler) => {
       return 300;
     } else if (match.losers.includes(wrestler)) {
       return -20;
+    }
+  }
+
+  if (match.stipulation == "Money In The Bank") {
+    if (match.winners.includes(wrestler)) {
+      return 150;
+    } else if (match.losers.includes(wrestler)) {
+      return -50;
     }
   }
 
@@ -75,8 +84,6 @@ const calcPoints = (match, wrestler) => {
       }
     }
   }
-
-  if (match.stipulation == "Money in the Bank") return;
 
   // Determine initial value
   let total = 0;
