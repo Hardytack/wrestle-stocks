@@ -22,6 +22,22 @@ router.get("/all", async (req, res) => {
   res.send({ wrestlers });
 });
 
+router.get("/topWrestlers", async (req, res) => {
+  let promotions = ["WWE", "AEW", "NJPW"];
+  let wrestlers = [];
+  // await promotions.forEach(async (prom) => {
+  //   let wrestler = await Wrestler.findOne({ promotions: prom }).sort("-points");
+  //   wrestlers.push(wrestler);
+  // });
+  for (prom in promotions) {
+    let wrestler = await Wrestler.findOne({
+      promotions: promotions[prom],
+    }).sort("-points");
+    wrestlers.push(wrestler);
+  }
+  res.send({ top: wrestlers });
+});
+
 // Fetches all matches for specific Wrestler
 router.get("/:name/matches", async (req, res) => {
   let regexVal = `^${req.params.name}$`;

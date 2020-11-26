@@ -15,11 +15,6 @@ export default function Navbar(props) {
 
   return (
     <nav>
-      {/* <h1>
-        <Link to="/" className="home-button">
-          WrestleStocks
-        </Link>
-      </h1> */}
       <Link to="/" className="navLogoContainer">
         <img src={WSLogo} alt="WrestleStocks Logo" />
       </Link>
