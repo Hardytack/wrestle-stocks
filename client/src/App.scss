@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Wrestlemania";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./fonts/Wrestlemania.ttf");
+}
+
 .App {
   text-align: center;
 }
@@ -50,6 +57,36 @@ form {
     margin-top: 15px;
     width: 50%;
     justify-self: center;
+  }
+}
+
+/*-----Navbar-----*/
+nav {
+  .navLogoContainer {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+  }
+  ul {
+    margin-top: 0;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+    li {
+      display: inline;
+      a {
+        text-decoration: none;
+      }
+    }
   }
 }
 

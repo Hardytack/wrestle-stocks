@@ -9,6 +9,8 @@ import Admin from "./views/Admin";
 import Wrestler from "./views/Wrestler";
 import NotFound from "./views/NotFound";
 import Login from "./views/Login";
+import MyProfile from "./views/MyProfile";
+import AllWrestlers from "./views/AllWrestlers";
 
 import WithAuth from "./components/WithAuth";
 
@@ -22,7 +24,14 @@ function App() {
         <Navbar username={username} />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/wrestlers" component={AllWrestlers} />
           <Route path="/admin" component={(props) => WithAuth(props, Admin)} />
+          <Route
+            path="/my-profile"
+            component={(props) =>
+              WithAuth({ ...props, username: username }, MyProfile)
+            }
+          />
           <Route path="/wrestler/:name" component={Wrestler} />
           <Route path="/login">
             <Login setUsername={setUsername} />
